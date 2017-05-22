@@ -39,7 +39,10 @@ import configureStore from './store';
 import { translationMessages } from './i18n';
 
 // Import CSS reset and Global Styles
-import './global-styles';
+// import './global-styles';
+
+import './assets/stylesheets/_bootstrap.scss';
+import './assets/stylesheets/font-awesome.scss';
 
 // Import root routes
 import createRoutes from './routes';
