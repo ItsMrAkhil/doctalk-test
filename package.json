@@ -217,7 +217,7 @@
     "cookie-parser": "^1.4.3",
     "cross-env": "3.1.3",
     "express": "4.14.0",
-    "express-session": "^1.15.3",
+    "express-session": "1.14.2",
     "fontfaceobserver": "2.0.7",
     "immutable": "3.8.1",
     "intl": "1.2.5",

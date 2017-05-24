@@ -39,20 +39,33 @@ router.post('/api/login', (req, res, next) => {
   } else if (!password) {
     return res.status(400).json({ success: false, message: 'Password required.' });
   }
-  return passport.authenticate('local-user', (err, user) => {
+  return passport.authenticate('local-user', { session: true }, (err, user) => {
     if (err) {
       return res.status(500).json({ success: false, message: 'Something went wrong.' });
     } else if (!user) {
       return res.status(400).json({ success: false, message: 'Invalid email or password.' });
     }
     const loggedInUser = { email: user.email, name: user.name };
-    return res.status(200).json({ success: true, message: 'Successfully logged in', user: loggedInUser });
+    return req.login(user, (errLogin) => {
+      if (errLogin) {
+        next(errLogin);
+        return res.status(500).json({ success: false, message: 'Error while trying to login.' });
+      }
+      return res.status(200).json({ success: true, message: 'Successfully logged in', user: loggedInUser });
+    });
   })(req, res, next);
 });
 
 router.all('/api/logout', (req, res) => {
   req.logout();
   return res.status(200).json({ success: true, message: 'Successfully logged out.' });
+});
+
+router.get('/api/user-details', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.status(200).json({ success: true, message: 'Logged in', user: req.user });
+  }
+  return res.status(401).json({ success: false, message: 'Not logged in' });
 });
 
 module.exports = router;

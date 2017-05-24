@@ -4,13 +4,18 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import { makeSelectApp } from './selectors';
-import { toggleLoginModal, logout } from './actions';
+import { toggleLoginModal, logout, fetchUserDetails } from './actions';
 
 class Header extends React.PureComponent {
 
+  componentDidMount() {
+    const { onFetchUserDetails } = this.props;
+    onFetchUserDetails();
+  }
+
   renderNavLinks() {
-    const { onToggleLoginModal, App: { loggedIn, user, loggingIn, loggingOut }, onLogout } = this.props;
-    if (loggingIn || loggingOut) {
+    const { onToggleLoginModal, App: { loggedIn, user, loggingIn, loggingOut, fetchingUserDetails }, onLogout } = this.props;
+    if (loggingIn || loggingOut || fetchingUserDetails) {
       return (
         <ul className="nav navbar-nav navbar-right">
           <li><Link to="#"><i className="fa fa-spin fa-spinner" /> Loading ...</Link></li>
@@ -57,6 +62,7 @@ Header.propTypes = {
   App: React.PropTypes.object,
   onToggleLoginModal: React.PropTypes.func,
   onLogout: React.PropTypes.func,
+  onFetchUserDetails: React.PropTypes.func,
 };
 
 export const mapStateToProps = createStructuredSelector({
@@ -67,6 +73,7 @@ export function mapDispatchToProps(dispatch) {
   return {
     onToggleLoginModal: () => dispatch(toggleLoginModal()),
     onLogout: () => dispatch(logout()),
+    onFetchUserDetails: () => dispatch(fetchUserDetails()),
   };
 }
 

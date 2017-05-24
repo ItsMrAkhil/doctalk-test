@@ -8,6 +8,9 @@ import { LOGIN_SUCCESS,
   LOGOUT,
   LOGOUT_ERROR,
   LOGOUT_SUCCESS,
+  FETCH_USER_DETAILS,
+  FETCH_USER_DETAILS_SUCCESS,
+  FETCH_USER_DETAILS_ERROR,
 } from './constants';
 
 const initialState = fromJS({
@@ -61,6 +64,17 @@ export default function appReducer(state = initialState, { type, payload }) {
         .set('loggedIn', false)
         .set('user', fromJS({ }))
         .set('loggingOut', false);
+    case FETCH_USER_DETAILS:
+      return state
+        .set('fetchingUserDetails', true);
+    case FETCH_USER_DETAILS_ERROR:
+      return state
+        .set('fetchingUserDetails', false);
+    case FETCH_USER_DETAILS_SUCCESS:
+      return state
+        .set('user', fromJS(payload.user))
+        .set('loggedIn', true)
+        .set('fetchingUserDetails', false);
     default:
       return state;
   }

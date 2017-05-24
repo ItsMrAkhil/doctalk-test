@@ -8,6 +8,9 @@ import {
   LOGOUT,
   LOGOUT_ERROR,
   LOGOUT_SUCCESS,
+  FETCH_USER_DETAILS,
+  FETCH_USER_DETAILS_ERROR,
+  FETCH_USER_DETAILS_SUCCESS,
 } from './constants';
 
 export function toggleLoginModal() {
@@ -58,5 +61,25 @@ export function logoutSuccess() {
 export function logoutError() {
   return {
     type: LOGOUT_ERROR,
+  };
+}
+
+export function fetchUserDetails() {
+  return {
+    type: FETCH_USER_DETAILS,
+  };
+}
+
+export function fetchUserDetailsError(response) {
+  return {
+    type: FETCH_USER_DETAILS_ERROR,
+    payload: response,
+  };
+}
+
+export function fetchUserDetailsSuccess(response) {
+  return {
+    type: FETCH_USER_DETAILS_SUCCESS,
+    payload: response,
   };
 }

@@ -40,14 +40,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.Promise = global.Promise;
-mongoose.connect(serverConfig.mongoURL, (err) => {
-  if (err) {
-    logger.error('Error in connecting to MongoDB');
-    throw err;
-  }
-});
-
 passport.use('local-user', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
@@ -55,6 +47,14 @@ passport.use('local-user', new LocalStrategy({
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+mongoose.Promise = global.Promise;
+mongoose.connect(serverConfig.mongoURL, (err) => {
+  if (err) {
+    logger.error('Error in connecting to MongoDB');
+    throw err;
+  }
+});
 
 if (isDev) {
   app.use(morgan('dev'));
@@ -68,6 +68,7 @@ setup(app, {
   outputPath: resolve(process.cwd(), 'build'),
   publicPath: '/',
 });
+
 
 // get the intended host and port number, use localhost and port 3000 if not provided
 const customHost = argv.host || process.env.HOST;
