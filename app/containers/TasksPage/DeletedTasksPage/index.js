@@ -26,6 +26,8 @@ export class DeletedTasksPage extends React.PureComponent { // eslint-disable-li
           <i className="fa fa-spin fa-spinner fa-3x page-center" />
         </div>
       );
+    } else if (tasks.length === 0) {
+      return 'No deleted tasks.';
     }
     return tasks.map((task) => {
       const { name, _id: taskId, endDate, createdAt, description } = task;

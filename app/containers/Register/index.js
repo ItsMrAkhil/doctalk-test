@@ -7,12 +7,27 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import { browserHistory } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 
+import { makeSelectApp } from '../App/selectors';
 import makeSelectRegister from './selectors';
 import { changeRegisterForm, register } from './actions';
 
 export class Register extends React.PureComponent {
+
+  componentDidMount() {
+    if (this.props.App.loggedIn) {
+      browserHistory.replace('/');
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.App.loggedIn) {
+      browserHistory.replace('/');
+    }
+  }
+
 
   renderResponse() {
     const { response: { success, message } } = this.props.Register;
@@ -43,6 +58,7 @@ export class Register extends React.PureComponent {
           ]}
         />
         <div className="col-sm-4 col-sm-offset-4">
+          <h2><center>Registration Form</center></h2>
           <form onSubmit={onRegister}>
             <div className="input-group">
               <span className="input-group-addon" >
@@ -89,10 +105,12 @@ Register.propTypes = {
   onRegister: PropTypes.func,
   onChangeRegisterForm: PropTypes.func,
   response: PropTypes.object,
+  App: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   Register: makeSelectRegister(),
+  App: makeSelectApp(),
 });
 
 function mapDispatchToProps(dispatch) {
