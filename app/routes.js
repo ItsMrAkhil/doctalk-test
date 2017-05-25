@@ -58,6 +58,67 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/tasks',
+      name: 'tasksPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/TasksPage/reducer'),
+          import('containers/TasksPage/sagas'),
+          import('containers/TasksPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('tasksPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+      childRoutes: [
+        {
+          path: 'list',
+          name: 'listTasks',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              System.import('containers/TasksPage/ListTasksPage/reducer'),
+              System.import('containers/TasksPage/ListTasksPage/sagas'),
+              System.import('containers/TasksPage/ListTasksPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([reducer, sagas, component]) => {
+              injectReducer('listTasksPage', reducer.default);
+              injectSagas(sagas.default);
+              renderRoute(component);
+            });
+            importModules.catch(errorLoading);
+          },
+        }, {
+          path: 'deleted',
+          name: 'deletedTasks',
+          getComponent(nextState, cb) {
+            const importModules = Promise.all([
+              System.import('containers/TasksPage/DeletedTasksPage/reducer'),
+              System.import('containers/TasksPage/DeletedTasksPage/sagas'),
+              System.import('containers/TasksPage/DeletedTasksPage'),
+            ]);
+
+            const renderRoute = loadModule(cb);
+
+            importModules.then(([reducer, sagas, component]) => {
+              injectReducer('deletedTasksPage', reducer.default);
+              injectSagas(sagas.default);
+              renderRoute(component);
+            });
+            importModules.catch(errorLoading);
+          },
+        },
+      ],
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

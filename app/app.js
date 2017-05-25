@@ -15,8 +15,9 @@ import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { useScroll } from 'react-router-scroll';
+import moment from 'moment';
+import momentLocalizer from 'react-widgets/lib/localizers/moment';
 import 'sanitize.css/sanitize.css';
-
 // Import root app
 import App from 'containers/App';
 
@@ -43,9 +44,14 @@ import { translationMessages } from './i18n';
 
 import './assets/stylesheets/_bootstrap.scss';
 import './assets/stylesheets/font-awesome.scss';
+import '../node_modules/react-widgets/lib/less/react-widgets.less';
 
 // Import root routes
 import createRoutes from './routes';
+
+// Localize moment
+momentLocalizer(moment);
+
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router

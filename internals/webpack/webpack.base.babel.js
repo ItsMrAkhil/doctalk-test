@@ -59,6 +59,10 @@ module.exports = (options) => ({
         limit: 10000,
       },
     }, {
+      test: /\.(less)$/,
+      include: /node_modules/,
+      loaders: ['style-loader', 'css-loader', 'less-loader'],
+    }, {
       test: /\.scss$/,
       exclude: /node_modules/,
       loaders: ['style-loader', 'css-loader', 'sass-loader'],

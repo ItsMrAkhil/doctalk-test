@@ -65,9 +65,19 @@ a {
 
 body {
   font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-weight: 700;
 }
 
 .copy-right {
   padding-top: 25px;
+}
+
+.page-center {
+  text-align: center;
+  margin-left: 50%;
+  margin-right: 50%;
+  margin-top: 50px;
+}
+
+.pb80 {
+  padding-bottom: 80px;
 }

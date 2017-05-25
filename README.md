@@ -1,6 +1,6 @@
-# MERN Kit
+# MERN Kit - Task Manager
 
-MERN Kit is a boilerplate for MongoDB, ExpressJS, ReactJS, and NodeJS
+MERN Kit - Task Manager is a boilerplate for MongoDB, ExpressJS, ReactJS, and NodeJS
 
   - Complete MERN Starter Kit
   - Production ready Boilerplate
@@ -11,7 +11,7 @@ MERN Kit is a boilerplate for MongoDB, ExpressJS, ReactJS, and NodeJS
   - Redux, React Router, Redux Sagas, and Reslect
   - ExpressJS, Mongoose, Passport Authentication
 
-React Boilerplate has taken from [here](https://github.com/react-boilerplate/react-boilerplate)
+Other usages - [React Boilerplate](https://github.com/react-boilerplate/react-boilerplate)
 
 # Setup
   - npm install

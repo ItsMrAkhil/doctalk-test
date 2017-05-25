@@ -10,9 +10,16 @@
  */
 
 import React from 'react';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
-export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+import { makeSelectApp } from '../App/selectors';
+import { toggleLoginModal } from '../App/actions';
+
+class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
+    const { onToggleLoginModal, App: { loggedIn } } = this.props;
     return (
       <div>
         <div className="intro-header">
@@ -20,19 +27,21 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
             <div className="row">
               <div className="col-lg-12">
                 <div className="intro-message">
-                  <h1>MERN Kit</h1>
-                  <h3>A simple starter application built with MERN stack</h3>
+                  <h1>Task Manager</h1>
+                  <h3>A simple task manager for users.</h3>
                   <hr className="intro-divider" />
                   <ul className="list-inline intro-social-buttons">
-                    <li>
-                      <a target="_blank" href="https://twitter.com/itsMrAkhil" className="btn btn-default btn-lg"><i className="fa fa-twitter fa-fw" /> <span className="network-name">Twitter</span></a>
-                    </li>
-                    <li>
-                      <a target="_blank" href="https://github.com/itsMrAkhil" className="btn btn-default btn-lg"><i className="fa fa-github fa-fw" /> <span className="network-name">Github</span></a>
-                    </li>
-                    <li>
-                      <a target="_blank" href="https://linkedin.com/in/akhilp1" className="btn btn-default btn-lg"><i className="fa fa-linkedin fa-fw" /> <span className="network-name">Linkedin</span></a>
-                    </li>
+                    {
+                      !loggedIn
+                        ?
+                          <li>
+                            <Link to="#" onClick={onToggleLoginModal} className="btn btn-default btn-lg"><i className="fa fa-sign-in fa-fw" /> <span className="network-name">Login to Manage Tasks</span></Link>
+                          </li>
+                        :
+                          <li>
+                            <Link to="/tasks/list" className="btn btn-default btn-lg"><i className="fa fa-list fa-fw" /> <span className="network-name">Manage Your Tasks</span></Link>
+                          </li>
+                    }
                   </ul>
                 </div>
               </div>
@@ -43,3 +52,20 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
     );
   }
 }
+
+HomePage.propTypes = {
+  onToggleLoginModal: React.PropTypes.func,
+  App: React.PropTypes.object,
+};
+
+export const mapStateToProps = createStructuredSelector({
+  App: makeSelectApp(),
+});
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    onToggleLoginModal: () => dispatch(toggleLoginModal()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
