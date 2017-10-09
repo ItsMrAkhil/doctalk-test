@@ -23,7 +23,10 @@ class App extends React.PureComponent { // eslint-disable-line react/prefer-stat
         >
           <Container>
             <Menu.Item>
-              <Image size="mini" src="https://res.cloudinary.com/dzfragjmc/image/upload/v1495421048/tasker_eyzpwv.svg" />
+              <Image
+                size="mini"
+                src="https://res.cloudinary.com/dzfragjmc/image/upload/v1495421048/tasker_eyzpwv.svg"
+              />
             </Menu.Item>
             <Menu.Item header />
           </Container>
