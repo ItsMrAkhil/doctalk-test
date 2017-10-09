@@ -1,52 +1,53 @@
 /*
+ *
  * HomePage
  *
- * This is the first thing users see of our App, at the '/' route
- *
- * NOTE: while this component should technically be a stateless functional
- * component (SFC), hot reloading does not currently support SFCs. If hot
- * reloading is not a necessity for you then you can refactor it and remove
- * the linting exception.
  */
 
-import React from 'react';
-import { createStructuredSelector } from 'reselect';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+// import Helmet from 'react-helmet';
+import { Input, Card, Image } from 'semantic-ui-react';
+import { createStructuredSelector } from 'reselect';
+import makeSelectHomePage from './selectors';
+import { searchGitHubUsers, changeText } from './actions';
 
-import { makeSelectApp } from '../App/selectors';
-import { toggleLoginModal } from '../App/actions';
+export class HomePage extends React.PureComponent {
 
-class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  renderUsers(users) {
+    return users.map((user) => {
+      const { avatar_url: avatar, html_url: url, login } = user;
+      return (
+        <Card color="teal">
+          <Image as="a" href={url} src={avatar} />
+          <Card.Content>
+            <Card.Header>{login}</Card.Header>
+          </Card.Content>
+        </Card>
+      );
+    });
+  }
+
   render() {
-    const { onToggleLoginModal, App: { loggedIn } } = this.props;
+    const { onSearchGitHubUsers, onTextChange, HomePage: { users, searching } } = this.props;
     return (
       <div>
-        <div className="intro-header">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="intro-message">
-                  <h1>Task Manager</h1>
-                  <h3>A simple task manager for users.</h3>
-                  <hr className="intro-divider" />
-                  <ul className="list-inline intro-social-buttons">
-                    {
-                      !loggedIn
-                        ?
-                          <li>
-                            <Link to="#" onClick={onToggleLoginModal} className="btn btn-default btn-lg"><i className="fa fa-sign-in fa-fw" /> <span className="network-name">Login to Manage Tasks</span></Link>
-                          </li>
-                        :
-                          <li>
-                            <Link to="/tasks/list" className="btn btn-default btn-lg"><i className="fa fa-list fa-fw" /> <span className="network-name">Manage Your Tasks</span></Link>
-                          </li>
-                    }
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="container">
+          <form action="" onSubmit={onSearchGitHubUsers}>
+            <Input
+              icon="search"
+              placeholder="search..."
+              onChange={onTextChange}
+              fluid
+              loading={searching}
+              disabled={searching}
+            />
+          </form>
+          <br />
+          <br />
+          <Card.Group itemsPerRow={4}>
+            {this.renderUsers(users)}
+          </Card.Group>
         </div>
       </div>
     );
@@ -54,17 +55,22 @@ class HomePage extends React.PureComponent { // eslint-disable-line react/prefer
 }
 
 HomePage.propTypes = {
-  onToggleLoginModal: React.PropTypes.func,
-  App: React.PropTypes.object,
+  onSearchGitHubUsers: PropTypes.func.isRequired,
+  onTextChange: PropTypes.func.isRequired,
+  HomePage: PropTypes.object,
 };
 
-export const mapStateToProps = createStructuredSelector({
-  App: makeSelectApp(),
+const mapStateToProps = createStructuredSelector({
+  HomePage: makeSelectHomePage(),
 });
 
-export function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    onToggleLoginModal: () => dispatch(toggleLoginModal()),
+    onSearchGitHubUsers: (evt) => {
+      if (evt && evt.preventDefault) { evt.preventDefault(); }
+      dispatch(searchGitHubUsers());
+    },
+    onTextChange: (evt) => dispatch(changeText(evt.target.value)),
   };
 }
 

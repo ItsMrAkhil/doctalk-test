@@ -38,14 +38,6 @@ import configureStore from './store';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
-
-// Import CSS reset and Global Styles
-// import './global-styles';
-
-import './assets/stylesheets/_bootstrap.scss';
-import './assets/stylesheets/font-awesome.scss';
-import '../node_modules/react-widgets/lib/less/react-widgets.less';
-
 // Import root routes
 import createRoutes from './routes';
 
