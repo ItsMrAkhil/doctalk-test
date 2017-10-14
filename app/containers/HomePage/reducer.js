@@ -14,7 +14,7 @@ import {
 } from './constants';
 
 const initialState = fromJS({
-  text: '',
+  texts: [],
   users: [],
 });
 
@@ -24,14 +24,15 @@ function homePageReducer(state = initialState, action) {
       return state;
     case CHANGE_TEXT:
       return state
-        .set('text', action.payload);
+        .set('texts', state.get('texts').push(action.payload));
     case SERACH_USERS:
       return state
         .set('searching', true);
     case SERACH_USERS_SUCCESS:
       return state
         .set('searching', false)
-        .set('users', fromJS(action.payload.items));
+        .set('users', fromJS(action.payload.items))
+        .set('texts', state.get('texts').shift());
     case SERACH_USERS_ERROR:
       return state
         .set('searching', false);

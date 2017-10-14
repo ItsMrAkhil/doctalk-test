@@ -14,6 +14,22 @@ import { searchGitHubUsers, changeText } from './actions';
 
 export class HomePage extends React.PureComponent {
 
+  constructor(props) {
+    super(props);
+    this.handleTextChange = this.handleTextChange.bind(this);
+  }
+
+  handleTextChange(evt) {
+    const { onTextChange, onSearchGitHubUsers, HomePage: { texts } } = this.props;
+    const val = evt.target.value;
+    if (val) {
+      onTextChange(val);
+    }
+    if (!texts.length && val) {
+      onSearchGitHubUsers();
+    }
+  }
+
   renderUsers(users) {
     return users.map((user) => {
       const { avatar_url: avatar, html_url: url, login } = user;
@@ -29,18 +45,17 @@ export class HomePage extends React.PureComponent {
   }
 
   render() {
-    const { onSearchGitHubUsers, onTextChange, HomePage: { users, searching } } = this.props;
+    const { HomePage: { users, searching } } = this.props;
     return (
       <div>
         <div className="container">
-          <form action="" onSubmit={onSearchGitHubUsers}>
+          <form action="" onSubmit={(evt) => evt.preventDefault()}>
             <Input
               icon="search"
               placeholder="search..."
-              onChange={onTextChange}
+              onChange={this.handleTextChange}
               fluid
               loading={searching}
-              disabled={searching}
             />
           </form>
           <br />
@@ -70,7 +85,9 @@ function mapDispatchToProps(dispatch) {
       if (evt && evt.preventDefault) { evt.preventDefault(); }
       dispatch(searchGitHubUsers());
     },
-    onTextChange: (evt) => dispatch(changeText(evt.target.value)),
+    onTextChange: (value) => {
+      dispatch(changeText(value));
+    },
   };
 }
 
