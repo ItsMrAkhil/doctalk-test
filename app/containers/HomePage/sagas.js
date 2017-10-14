@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { SERACH_USERS } from './constants';
+import { SERACH_USERS, CHANGE_TEXT } from './constants';
 
 import { searchGitHubUsersError, searchGitHubUsersSuccess } from './actions';
 import request from '../../utils/request';
@@ -22,6 +22,7 @@ export function* getsearchUserDeatils() {
 
 export function* searchUserDetails() {
   yield takeLatest(SERACH_USERS, getsearchUserDeatils);
+  yield takeLatest(CHANGE_TEXT, getsearchUserDeatils);
 }
 
 // Bootstrap sagas
